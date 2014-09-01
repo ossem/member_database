@@ -15,10 +15,10 @@ How to Use
  		cd path/you/want/
  		git clone https://github.com/ossem/member_database.git
  	
- * create the test database:
+* create the test database:
  
  		python3 test_database.py
  		
- * run the main program:
+* run the main program:
  
  		python3 main.py
