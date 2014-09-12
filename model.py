@@ -1,5 +1,6 @@
 import sqlite3
 import nfc_lib
+import datetime
 
 class OssemDB():
     def __init__(self):
@@ -36,8 +37,11 @@ class OssemDB():
         nfc_tag = nfc_lib.create_nfc_tag()
         new_member = (first_name, last_name, handle, phone_number, email_address, nfc_tag)
         self.add_member(new_member, self.ossem_db)
-        tag_to_write = (nfc_tag,)
-        self.add_tag((tag_to_write), self.ossem_db)
+
+        new_date = self.get_date()
+        new_time = self.get_time()
+        time_stamped_tag = (nfc_tag, new_date, new_time)
+        self.add_tag(time_stamped_tag, self.ossem_db)
 
     def add_member(self, values, db_name):
         with sqlite3.connect(db_name) as db:
@@ -49,9 +53,19 @@ class OssemDB():
     def add_tag(self, values, db_name):
         with sqlite3.connect(db_name) as db:
             cursor = db.cursor()
-            sql = "insert into NFCScans (NFCTag) values (?)"
+            sql = "insert into NFCScans (NFCTag, DateScanned, TimeScanned) values (?,?,?)"
             cursor.execute(sql,values)
             db.commit()
+
+    def get_date(self):
+        now = datetime.datetime.now()
+        current_date = str(now.month) + '-' + str(now.day) + '-' + str(now.year)
+        return str(current_date)
+
+    def get_time(self):
+        now = datetime.datetime.now()
+        current_time = str(now.hour) + ':' + str(now.minute) + ':' + str(now.second) + ':' + str(now.microsecond)
+        return str(current_time)
 
     def select_all_members(self, db_name):
         with sqlite3.connect(db_name) as db:
