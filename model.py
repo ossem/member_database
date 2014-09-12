@@ -53,14 +53,6 @@ class OssemDB():
             cursor.execute(sql,values)
             db.commit()
 
-    # To-do: fix delete_member
-    def delete_member(self, data, db_name):
-        with sqlite3.connect(db_name) as db:
-            cursor = db.cursor()
-            sql = "delete from Members where FirstName=?"
-            cursor.execute(sql,data)
-            db.commit()
-
     def select_all_members(self, db_name):
         with sqlite3.connect(db_name) as db:
             cursor = db.cursor()
@@ -71,17 +63,3 @@ class OssemDB():
     def print_all_members(self):
         for member in self.select_all_members(self.ossem_db):
             print(member)
-
-    def select_member(self, id, db_name):
-        with sqlite3.connect(db_name) as db:
-            cursor = db.cursor()
-            cursor.execute("select FirstName, LastName ,Handle from Members where MemberID=?",(id,))
-            member = cursor.fetchone()
-            return member 
-
-    def update_member(self, data, db_name):
-        with sqlite3.connect(db_name) as db:
-            cursor = db.cursor()
-            sql = "update Member set FirstName=?, LastName=?, Handle=? where MemberID=?"
-            cursor.execute(sql,data)
-            db.commit()
