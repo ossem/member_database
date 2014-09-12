@@ -19,7 +19,7 @@ def append_letter_or_number():
 # generates a random 16-byte NFC ID tag when a NFC is unavailable
 def create_nfc_tag():
     random_nfc_tag = ''
-    tag_size = 12 #96 bits (16 bytes)
+    tag_size = 7 # number of hex pairs
     end_of_tag = tag_size - 1
     current_byte = 0
     byte_half = 0
